@@ -33,7 +33,7 @@ export function AnalyticsOverview({
       </div>
 
       <div className="p-5 bg-slate-900/80 border border-slate-800 rounded-xl shadow-md">
-        <div className="text-xs font-semibold text-slate-400 mb-1">Vice Captain</div>
+        <div className="text-xs font-semibold text-slate-400 mb-1">Recommended Vice Captain</div>
         <div className="text-xl font-bold text-slate-100 truncate">
           {viceCaptainRecommendation?.web_name || 'N/A'}
         </div>

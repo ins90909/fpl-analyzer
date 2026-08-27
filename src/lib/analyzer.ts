@@ -56,9 +56,6 @@ export function analyzeSquad(
   const starting11 = starting11Picks.map(processPick);
   const bench = benchPicks.map(processPick);
 
-  const captain = starting11.find((p: ProcessedPlayer) => p.is_captain) || starting11[0] || null;
-  const viceCaptain = starting11.find((p: ProcessedPlayer) => p.is_vice_captain) || starting11[1] || null;
-
   const totalXP = parseFloat(
     starting11.reduce((sum: number, e: ProcessedPlayer) => sum + e.expected_score, 0).toFixed(2)
   );
@@ -66,19 +63,24 @@ export function analyzeSquad(
   const bank = (picksData.entry_history?.bank || 0) / 10;
   const teamValue = (picksData.entry_history?.value || 0) / 10;
 
-  // Simple transfer suggestion logic
+  // Transfer suggestion logic (Filters for owned players & budget)
   const transferSuggestions: any[] = [];
+  const squadIds = new Set(picksData.picks.map((p: FPLPick) => p.element));
   const lowestSquadPlayer = [...starting11].sort(
     (a: ProcessedPlayer, b: ProcessedPlayer) => a.expected_score - b.expected_score
   )[0];
 
   if (lowestSquadPlayer) {
+    const currentBank = picksData.entry_history?.bank || 0;
+    const maxAffordableCost = lowestSquadPlayer.now_cost + currentBank;
+
     const replacement = bootstrap.elements
       .filter(
         (e: FPLElement) =>
           e.element_type === lowestSquadPlayer.element_type &&
-          e.id !== lowestSquadPlayer.id &&
-          e.status === 'a'
+          !squadIds.has(e.id) &&                  // Excludes players already in your squad
+          e.now_cost <= maxAffordableCost &&       // Fits in your available budget
+          e.status === 'a'                         // Must be active/available
       )
       .map((e: FPLElement) => ({
         ...e,
@@ -97,11 +99,14 @@ export function analyzeSquad(
     }
   }
 
+  // Sort starting 11 by score descending for top banner recommendations
+  const sortedXI = [...starting11].sort((a, b) => b.expected_score - a.expected_score);
+
   return {
     starting11,
     bench,
-    captain,
-    viceCaptain,
+    captain: sortedXI[0] || null,        // Recommended Captain (Highest Score)
+    viceCaptain: sortedXI[1] || null,    // Recommended Vice Captain (2nd Highest)
     totalXP,
     bank,
     teamValue,

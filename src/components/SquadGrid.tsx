@@ -32,9 +32,23 @@ export function SquadGrid({ starting11, bench, bootstrap, fixtures }: SquadGridP
             </span>
             <span className="text-xs font-semibold text-slate-400">{player.team_short}</span>
           </div>
-          <div className="font-bold text-slate-100 text-sm truncate" title={player.web_name}>
-            {player.web_name}
-          </div>
+            <div className="flex items-center justify-between gap-1">
+                <span className="font-bold text-slate-100 text-sm truncate" title={player.web_name}>
+                    {player.web_name}
+                </span>
+                
+                {player.is_captain && (
+                    <span className="px-1.5 py-0.5 text-[10px] font-black bg-amber-500/20 text-amber-300 border border-amber-500/40 rounded shrink-0">
+                    (C)
+                    </span>
+                )}
+
+                {player.is_vice_captain && (
+                    <span className="px-1.5 py-0.5 text-[10px] font-black bg-slate-700/80 text-slate-300 border border-slate-600 rounded shrink-0">
+                    (VC)
+                    </span>
+                )}
+            </div>
         </div>
 
         {/* Upcoming Fixtures FDR Badges */}
