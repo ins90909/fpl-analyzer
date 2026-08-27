@@ -76,8 +76,8 @@ export interface ProcessedPlayer extends FPLElement {
   expected_score: number;
   position_short: string;
   team_short: string;
-  is_captain?: boolean;
-  is_vice_captain?: boolean;
+  is_captain?: boolean;      // <-- ADD THIS
+  is_vice_captain?: boolean; // <-- ADD THIS
 }
 
 export interface AnalysisResult {

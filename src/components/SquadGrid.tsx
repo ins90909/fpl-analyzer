@@ -1,19 +1,17 @@
 'use client';
 
-import { FPLElement, FPLBootstrap, FPLFixture } from '@/types/fpl';
+import { FPLBootstrap, FPLFixture, ProcessedPlayer } from '@/types/fpl';
 import { getUpcomingFixtures, getFDRBadgeColor } from '@/lib/fixtures';
 
 interface SquadGridProps {
-  starting11: (FPLElement & { expected_score?: number; position_short?: string; team_short?: string })[];
-  bench: (FPLElement & { expected_score?: number; position_short?: string; team_short?: string })[];
+  starting11: ProcessedPlayer[];
+  bench: ProcessedPlayer[];
   bootstrap?: FPLBootstrap | null;
   fixtures?: FPLFixture[] | null;
 }
 
 export function SquadGrid({ starting11, bench, bootstrap, fixtures }: SquadGridProps) {
-  const renderPlayerCard = (
-    player: FPLElement & { expected_score?: number; position_short?: string; team_short?: string; team_id?: number }
-  ) => {
+  const renderPlayerCard = (player: ProcessedPlayer & { team_id?: number }) => {
     const teamId = player.team || player.team_id || 0;
     const upcoming =
       bootstrap && fixtures && Array.isArray(fixtures) && teamId > 0
@@ -32,23 +30,23 @@ export function SquadGrid({ starting11, bench, bootstrap, fixtures }: SquadGridP
             </span>
             <span className="text-xs font-semibold text-slate-400">{player.team_short}</span>
           </div>
-            <div className="flex items-center justify-between gap-1">
-                <span className="font-bold text-slate-100 text-sm truncate" title={player.web_name}>
-                    {player.web_name}
-                </span>
-                
-                {player.is_captain && (
-                    <span className="px-1.5 py-0.5 text-[10px] font-black bg-amber-500/20 text-amber-300 border border-amber-500/40 rounded shrink-0">
-                    (C)
-                    </span>
-                )}
+          <div className="flex items-center justify-between gap-1">
+            <span className="font-bold text-slate-100 text-sm truncate" title={player.web_name}>
+              {player.web_name}
+            </span>
+            
+            {player.is_captain && (
+              <span className="px-1.5 py-0.5 text-[10px] font-black bg-amber-500/20 text-amber-300 border border-amber-500/40 rounded shrink-0">
+                (C)
+              </span>
+            )}
 
-                {player.is_vice_captain && (
-                    <span className="px-1.5 py-0.5 text-[10px] font-black bg-slate-700/80 text-slate-300 border border-slate-600 rounded shrink-0">
-                    (VC)
-                    </span>
-                )}
-            </div>
+            {player.is_vice_captain && (
+              <span className="px-1.5 py-0.5 text-[10px] font-black bg-slate-700/80 text-slate-300 border border-slate-600 rounded shrink-0">
+                (VC)
+              </span>
+            )}
+          </div>
         </div>
 
         {/* Upcoming Fixtures FDR Badges */}
