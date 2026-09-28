@@ -16,6 +16,8 @@ export interface FPLElement {
   chance_of_playing_next_round: number | null;
   transfers_in_event: number;
   transfers_out_event: number;
+  cost_change_event?: number;
+  cost_change_start?: number;
   news?: string;
   news_added?: string | null;
 }
@@ -33,6 +35,7 @@ export interface FPLEvent {
   is_current: boolean;
   is_next: boolean;
   finished: boolean;
+  deadline_time?: string;
 }
 
 export interface FPLBootstrap {
@@ -47,6 +50,8 @@ export interface FPLPick {
   multiplier: number;
   is_captain: boolean;
   is_vice_captain: boolean;
+  purchase_price?: number;
+  selling_price?: number;
 }
 
 export interface FPLPicksResponse {
@@ -66,6 +71,8 @@ export interface FPLLiveElement {
   id: number;
   stats: {
     total_points: number;
+    minutes?: number;
+    bonus?: number;
   };
 }
 
@@ -131,6 +138,22 @@ export interface FPLLeagueStandings {
   };
 }
 
+export interface FPLManagerLeague {
+  id: number;
+  name: string;
+  short_name?: string | null;
+  rank?: number | null;
+  league_type?: string;
+  scoring?: string;
+  start_event?: number;
+  closed?: boolean;
+}
+
+export interface FPLManagerLeagues {
+  classic: FPLManagerLeague[];
+  h2h: FPLManagerLeague[];
+}
+
 export interface FPLPlayerSummary {
   history: Array<{
     round: number;
@@ -141,6 +164,14 @@ export interface FPLPlayerSummary {
     clean_sheets: number;
     goals_conceded: number;
     bonus: number;
+    saves?: number;
+    penalties_saved?: number;
+    defensive_contribution?: number | string;
+    tackles?: number;
+    key_passes?: number;
+    expected_goals?: number | string;
+    expected_assists?: number | string;
+    expected_goal_involvements?: number | string;
     opponent_team: number;
     was_home: boolean;
   }>;
@@ -166,10 +197,21 @@ export interface FPLFixture {
 
 export interface ProcessedPlayer extends FPLElement {
   expected_score: number;
+  next_three_gameweek_projection: number;
   position_short: string;
   team_short: string;
+  squad_position: number;
+  selling_price?: number;
   is_captain?: boolean;      // <-- ADD THIS
   is_vice_captain?: boolean; // <-- ADD THIS
+}
+
+export interface TransferSuggestion {
+  playerOut: ProcessedPlayer;
+  playerIn: ProcessedPlayer;
+  gain: number;
+  sellingPrice: number;
+  availableBudget: number;
 }
 
 export interface AnalysisResult {
@@ -180,5 +222,5 @@ export interface AnalysisResult {
   totalXP: number;
   bank: number;
   teamValue: number;
-  transferSuggestions: any[];
+  transferSuggestions: TransferSuggestion[];
 }

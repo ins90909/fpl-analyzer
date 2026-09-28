@@ -12,6 +12,7 @@ import { ThemeToggle } from '@/components/ThemeToggle';
 import { GameweekResults } from '@/components/GameweekResults';
 import { ManagerFeatures } from '@/components/ManagerFeatures';
 import { PlayerDetailsModal } from '@/components/PlayerDetailsModal';
+import { FPLDashboardInsights } from '@/components/FPLDashboardInsights';
 import { analyzeSquad } from '@/lib/analyzer';
 import {
   FPLBootstrap,
@@ -22,6 +23,7 @@ import {
 } from '@/types/fpl';
 
 export default function Home() {
+  const [activeTab, setActiveTab] = useState<'overall' | 'manager'>('overall');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [bootstrap, setBootstrap] = useState<FPLBootstrap | null>(null);
@@ -75,7 +77,8 @@ export default function Home() {
       setPicksData(picksData);
       setLiveData(liveData);
       setSelectedEventId(eventId);
-      setAnalysis(analyzeSquad(bootstrapData, picksData));
+      setAnalysis(analyzeSquad(bootstrapData, picksData, fixturesData));
+      setActiveTab('manager');
     } catch (err: unknown) {
       console.error(err);
       setError(err instanceof Error ? err.message : 'An unexpected error occurred.');
@@ -109,6 +112,7 @@ export default function Home() {
       setPicksData(nextPicks);
       setLiveData(nextLiveData);
       setSelectedEventId(eventId);
+      setAnalysis(analyzeSquad(bootstrap, nextPicks, fixtures ?? []));
     } catch (err: unknown) {
       console.error(err);
       setError(err instanceof Error ? err.message : 'An unexpected error occurred.');
@@ -142,28 +146,6 @@ export default function Home() {
 
       <SearchBar onSearch={handleSearch} loading={loading} />
 
-      {managerId && selectedEventId !== null && availableEvents.length > 0 && (
-        <div className="flex flex-wrap items-center justify-center gap-3">
-          <label htmlFor="gameweek-select" className="text-sm font-semibold text-[#244764]">
-            View gameweek
-          </label>
-          <select
-            id="gameweek-select"
-            value={selectedEventId}
-            onChange={(event) => void handleEventChange(Number(event.target.value))}
-            disabled={loading}
-            className="rounded-lg border border-[#c9e0eb] bg-white px-3 py-2 text-sm text-[#16324f] shadow-sm focus:outline-none focus:border-[#55b89a] disabled:opacity-60"
-          >
-            {availableEvents.map((event) => (
-              <option key={event.id} value={event.id}>
-                {event.name}{event.finished ? ' · Completed' : event.is_current ? ' · In progress' : ' · Upcoming'}
-              </option>
-            ))}
-          </select>
-          {loading && <span className="text-xs text-[#648198]">Loading gameweek…</span>}
-        </div>
-      )}
-
       {error && (
         <div className="p-4 bg-[#fff0ef] border border-[#efc8c4] text-[#b45851] rounded-lg text-center text-sm font-semibold max-w-xl mx-auto">
           {error}
@@ -171,64 +153,139 @@ export default function Home() {
       )}
 
       {analysis && bootstrap && (
-        <>
-          {managerId && selectedEventId !== null && picksData && (
-            <ManagerFeatures
-              managerId={managerId}
-              eventId={selectedEventId}
-              picks={picksData}
-              bootstrap={bootstrap}
-            />
-          )}
-          {selectedEvent?.finished && picksData && liveData && (
-            <GameweekResults
-              gameweek={selectedEvent.id}
-              picks={picksData}
-              liveData={liveData}
-              bootstrap={bootstrap}
-              onPlayerSelect={setSelectedPlayerId}
-            />
-          )}
+        <section className="space-y-6">
+          <div role="tablist" aria-label="Dashboard view" className="flex gap-2 border-b border-[#c9e0eb]">
+            <button
+              id="overall-tab"
+              type="button"
+              role="tab"
+              aria-selected={activeTab === 'overall'}
+              aria-controls="overall-panel"
+              onClick={() => setActiveTab('overall')}
+              className={`border-b-2 px-5 py-3 text-sm font-semibold transition-colors ${
+                activeTab === 'overall'
+                  ? 'border-[#327a68] text-[#327a68]'
+                  : 'border-transparent text-[#648198] hover:text-[#244764]'
+              }`}
+            >
+              Overall
+            </button>
+            <button
+              id="manager-tab"
+              type="button"
+              role="tab"
+              aria-selected={activeTab === 'manager'}
+              aria-controls="manager-panel"
+              onClick={() => setActiveTab('manager')}
+              className={`border-b-2 px-5 py-3 text-sm font-semibold transition-colors ${
+                activeTab === 'manager'
+                  ? 'border-[#327a68] text-[#327a68]'
+                  : 'border-transparent text-[#648198] hover:text-[#244764]'
+              }`}
+            >
+              Manager
+            </button>
+          </div>
 
-          <section className="space-y-8" aria-label="Squad analysis and planning tools">
-            <h2 className="text-lg font-bold text-[#244764]">Squad analysis &amp; planning</h2>
-            <AnalyticsOverview
-              captainRecommendation={analysis.captain}
-              viceCaptainRecommendation={analysis.viceCaptain}
-              totalXP={analysis.totalXP}
-              bank={analysis.bank}
-              teamValue={analysis.teamValue}
-            />
-
-            <SquadAvailabilityAlerts
-              starting11={analysis.starting11}
-              bench={analysis.bench}
-            />
-
-            <SquadGrid
-              starting11={analysis.starting11}
-              bench={analysis.bench}
-              bootstrap={bootstrap}
-              fixtures={fixtures}
-              onPlayerSelect={setSelectedPlayerId}
-            />
-
-            {analysis.transferSuggestions && analysis.transferSuggestions.length > 0 && (
-              <TransferSuggestions suggestions={analysis.transferSuggestions} />
-            )}
-
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              <WildcardOptimizer bootstrap={bootstrap} />
-              <PriceChangeTracker bootstrap={bootstrap} />
+          {activeTab === 'overall' && selectedEvent && liveData && (
+            <div id="overall-panel" role="tabpanel" aria-labelledby="overall-tab">
+              <FPLDashboardInsights
+                bootstrap={bootstrap}
+                event={selectedEvent}
+                liveData={liveData}
+                onPlayerSelect={setSelectedPlayerId}
+              />
             </div>
-          </section>
-        </>
+          )}
+
+          {activeTab === 'manager' && (
+            <div id="manager-panel" role="tabpanel" aria-labelledby="manager-tab" className="space-y-8">
+              {managerId && selectedEventId !== null && availableEvents.length > 0 && (
+                <div className="flex flex-wrap items-center gap-3">
+                  <label htmlFor="gameweek-select" className="text-sm font-semibold text-[#244764]">
+                    View gameweek
+                  </label>
+                  <select
+                    id="gameweek-select"
+                    value={selectedEventId}
+                    onChange={(event) => void handleEventChange(Number(event.target.value))}
+                    disabled={loading}
+                    className="rounded-lg border border-[#c9e0eb] bg-white px-3 py-2 text-sm text-[#16324f] shadow-sm focus:outline-none focus:border-[#55b89a] disabled:opacity-60"
+                  >
+                    {availableEvents.map((event) => (
+                      <option key={event.id} value={event.id}>
+                        {event.name}{event.finished ? ' · Completed' : event.is_current ? ' · In progress' : ' · Upcoming'}
+                      </option>
+                    ))}
+                  </select>
+                  {loading && <span className="text-xs text-[#648198]">Loading gameweek…</span>}
+                </div>
+              )}
+
+              {managerId && selectedEventId !== null && picksData && (
+                <ManagerFeatures
+                  managerId={managerId}
+                  eventId={selectedEventId}
+                  picks={picksData}
+                  bootstrap={bootstrap}
+                />
+              )}
+              {selectedEvent?.finished && picksData && liveData && (
+                <GameweekResults
+                  gameweek={selectedEvent.id}
+                  picks={picksData}
+                  liveData={liveData}
+                  bootstrap={bootstrap}
+                  onPlayerSelect={setSelectedPlayerId}
+                />
+              )}
+
+              <section className="space-y-8" aria-label="Squad analysis and planning tools">
+                <h2 className="text-lg font-bold text-[#244764]">Squad analysis &amp; planning</h2>
+                <AnalyticsOverview
+                  captainRecommendation={analysis.captain}
+                  viceCaptainRecommendation={analysis.viceCaptain}
+                  totalXP={analysis.totalXP}
+                  bank={analysis.bank}
+                  teamValue={analysis.teamValue}
+                />
+
+                <SquadAvailabilityAlerts
+                  starting11={analysis.starting11}
+                  bench={analysis.bench}
+                />
+
+                <SquadGrid
+                  starting11={analysis.starting11}
+                  bench={analysis.bench}
+                  bootstrap={bootstrap}
+                  fixtures={fixtures}
+                  liveData={liveData}
+                  gameweekFinished={selectedEvent?.finished ?? false}
+                  onPlayerSelect={setSelectedPlayerId}
+                />
+
+                <TransferSuggestions
+                  suggestions={analysis.transferSuggestions}
+                  bootstrap={bootstrap}
+                  fixtures={fixtures ?? []}
+                />
+
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                  <WildcardOptimizer bootstrap={bootstrap} />
+                  <PriceChangeTracker bootstrap={bootstrap} />
+                </div>
+              </section>
+            </div>
+          )}
+        </section>
       )}
       {bootstrap && (
         <PlayerDetailsModal
           playerId={selectedPlayerId}
           bootstrap={bootstrap}
           onClose={() => setSelectedPlayerId(null)}
+          onPlayerSelect={setSelectedPlayerId}
         />
       )}
     </main>

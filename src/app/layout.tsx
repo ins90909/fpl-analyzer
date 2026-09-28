@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { WatchlistProvider } from '@/components/WatchlistProvider';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -21,7 +22,7 @@ export default function RootLayout({
         />
       </head>
       <body className="bg-[#f4fbff] text-[#16324f] min-h-screen">
-        {children}
+        <WatchlistProvider>{children}</WatchlistProvider>
       </body>
     </html>
   );
