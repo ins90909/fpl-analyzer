@@ -8,9 +8,10 @@ interface SquadGridProps {
   bench: ProcessedPlayer[];
   bootstrap?: FPLBootstrap | null;
   fixtures?: FPLFixture[] | null;
+  onPlayerSelect?: (playerId: number) => void;
 }
 
-export function SquadGrid({ starting11, bench, bootstrap, fixtures }: SquadGridProps) {
+export function SquadGrid({ starting11, bench, bootstrap, fixtures, onPlayerSelect }: SquadGridProps) {
   const renderPlayerCard = (player: ProcessedPlayer & { team_id?: number }) => {
     const teamId = player.team || player.team_id || 0;
     const upcoming =
@@ -31,9 +32,14 @@ export function SquadGrid({ starting11, bench, bootstrap, fixtures }: SquadGridP
             <span className="text-xs font-semibold text-[#7891a3]">{player.team_short}</span>
           </div>
           <div className="flex items-center justify-between gap-1">
-            <span className="font-bold text-[#244764] text-sm truncate" title={player.web_name}>
+            <button
+              type="button"
+              onClick={() => onPlayerSelect?.(player.id)}
+              className="text-left font-bold text-[#244764] text-sm truncate hover:underline"
+              title={`View ${player.web_name} details`}
+            >
               {player.web_name}
-            </span>
+            </button>
 
             {player.is_captain && (
               <span className="px-1.5 py-0.5 text-[10px] font-black bg-[#fff4d6] text-[#8a671c] border border-[#ead79b] rounded shrink-0">

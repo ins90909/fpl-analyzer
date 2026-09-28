@@ -55,11 +55,103 @@ export interface FPLPicksResponse {
     event: number;
     points: number;
     total_points: number;
-    rank: number;
+    rank?: number;
     overall_rank: number;
     bank: number;
     value: number;
   };
+}
+
+export interface FPLLiveElement {
+  id: number;
+  stats: {
+    total_points: number;
+  };
+}
+
+export interface FPLLiveResponse {
+  elements: FPLLiveElement[];
+}
+
+export interface FPLManagerHistory {
+  current: Array<{
+    event: number;
+    points: number;
+    total_points: number;
+    rank: number;
+    overall_rank: number;
+    bank: number;
+    value: number;
+    event_transfers: number;
+    event_transfers_cost: number;
+  }>;
+  past: Array<{
+    season_name: string;
+    total_points: number;
+    rank: number;
+  }>;
+  chips: Array<{
+    name: string;
+    time: string;
+    event: number;
+  }>;
+}
+
+export interface FPLTransfer {
+  element_in: number;
+  element_out: number;
+  event: number;
+  time: string;
+  element_in_cost: number;
+  element_out_cost: number;
+}
+
+export interface FPLManagerData {
+  history: FPLManagerHistory;
+  transfers: FPLTransfer[];
+}
+
+export interface FPLLeagueStandings {
+  league: {
+    id: number;
+    name: string;
+  };
+  standings: {
+    page: number;
+    results: Array<{
+      id: number;
+      event_total: number;
+      player_name: string;
+      rank: number;
+      last_rank: number;
+      total: number;
+      entry: number;
+      entry_name: string;
+    }>;
+  };
+}
+
+export interface FPLPlayerSummary {
+  history: Array<{
+    round: number;
+    total_points: number;
+    minutes: number;
+    goals_scored: number;
+    assists: number;
+    clean_sheets: number;
+    goals_conceded: number;
+    bonus: number;
+    opponent_team: number;
+    was_home: boolean;
+  }>;
+  fixtures: Array<{
+    id: number;
+    event: number | null;
+    team_h: number;
+    team_a: number;
+    is_home: boolean;
+    difficulty: number;
+  }>;
 }
 
 export interface FPLFixture {
