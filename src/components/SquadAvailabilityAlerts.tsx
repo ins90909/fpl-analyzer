@@ -16,18 +16,17 @@ export function SquadAvailabilityAlerts({ starting11, bench }: SquadAvailability
 
   if (flaggedPlayers.length === 0) {
     return (
-      <div className="p-4 bg-emerald-950/30 border border-emerald-800/40 rounded-xl flex items-center gap-3 text-emerald-300 text-xs">
-        <span className="text-base">✅</span>
+      <div className="p-4 bg-[#e8f7f0] border border-[#bde3d0] rounded-lg flex items-center gap-3 text-[#327a68] text-xs">
         <span><strong>Full Fitness:</strong> No players in your squad currently have injury or international duty flags.</span>
       </div>
     );
   }
 
   return (
-    <div className="p-4 bg-slate-900/80 border border-amber-500/30 rounded-xl space-y-3">
+    <div className="p-4 bg-[#fffaf0] border border-[#ead79b] rounded-lg space-y-3">
       <div className="flex items-center justify-between">
-        <h3 className="text-sm font-bold text-slate-100 flex items-center gap-2">
-          <span>🚨</span> Squad Fitness & Availability ({flaggedPlayers.length} Flagged)
+        <h3 className="text-sm font-bold text-[#244764] flex items-center gap-2">
+          Squad Fitness & Availability ({flaggedPlayers.length} Flagged)
         </h3>
       </div>
 
@@ -35,15 +34,15 @@ export function SquadAvailabilityAlerts({ starting11, bench }: SquadAvailability
         {flaggedPlayers.map((player) => (
           <div
             key={player.id}
-            className="p-2.5 bg-slate-950/60 border border-slate-800 rounded-lg flex items-start gap-2.5"
+            className="p-2.5 bg-white border border-[#e5dcb9] rounded-lg flex items-start gap-2.5"
           >
             <PlayerStatusBadge player={player} showText />
             <div className="min-w-0 flex-1">
-              <div className="flex items-center justify-between text-xs font-semibold text-slate-200">
+              <div className="flex items-center justify-between text-xs font-semibold text-[#244764]">
                 <span>{player.web_name}</span>
-                <span className="text-[10px] text-slate-400 font-normal">{player.team_short}</span>
+                <span className="text-[10px] text-[#7891a3] font-normal">{player.team_short}</span>
               </div>
-              <p className="text-[11px] text-slate-400 mt-0.5 line-clamp-2">
+              <p className="text-[11px] text-[#7891a3] mt-0.5 line-clamp-2">
                 {player.news || 'Status unknown'}
               </p>
             </div>

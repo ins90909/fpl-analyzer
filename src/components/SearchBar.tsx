@@ -46,19 +46,19 @@ export function SearchBar({ onSearch, loading = false }: SearchBarProps) {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Enter FPL Manager ID or Team Name..."
-          className="flex-1 px-4 py-3 bg-slate-900 border border-slate-700 rounded-xl text-slate-100 placeholder-slate-500 focus:outline-none focus:border-emerald-500 transition-colors text-sm"
+          className="flex-1 px-4 py-3 bg-white border border-[#c9e0eb] rounded-lg text-[#16324f] placeholder-[#8aa4b5] focus:outline-none focus:border-[#55b89a] transition-colors text-sm shadow-sm"
         />
         <button
           type="submit"
           disabled={loading || isSearchingName}
-          className="px-6 py-3 bg-emerald-600 hover:bg-emerald-500 text-slate-100 font-semibold rounded-xl transition-colors disabled:opacity-50 text-sm"
+          className="px-6 py-3 bg-[#55b89a] hover:bg-[#449f83] text-white font-semibold rounded-lg transition-colors disabled:opacity-50 text-sm"
         >
           {loading || isSearchingName ? 'Searching...' : 'Search'}
         </button>
       </form>
 
       {searchResults.length > 0 && (
-        <div className="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden shadow-2xl max-h-60 overflow-y-auto">
+        <div className="bg-white border border-[#c9e0eb] rounded-lg overflow-hidden shadow-lg max-h-60 overflow-y-auto">
           {searchResults.map((item) => (
             <button
               key={item.entryId}
@@ -67,15 +67,15 @@ export function SearchBar({ onSearch, loading = false }: SearchBarProps) {
                 onSearch(item.entryId.toString());
                 setSearchResults([]);
               }}
-              className="w-full px-4 py-3 text-left hover:bg-slate-800 flex justify-between items-center transition-colors border-b border-slate-800/50 last:border-0"
+              className="w-full px-4 py-3 text-left hover:bg-[#eff9f5] flex justify-between items-center transition-colors border-b border-[#e0edf2] last:border-0"
             >
               <div>
-                <div className="font-semibold text-slate-200 text-xs">{item.entryName}</div>
-                <div className="text-[11px] text-slate-400">
+                <div className="font-semibold text-[#244764] text-xs">{item.entryName}</div>
+                <div className="text-[11px] text-[#7891a3]">
                   {item.playerFirstName} {item.playerLastName}
                 </div>
               </div>
-              <span className="text-xs font-mono text-emerald-400 bg-emerald-950/60 border border-emerald-800/60 px-2 py-1 rounded">
+              <span className="text-xs font-mono text-[#327a68] bg-[#e8f7f0] border border-[#bde3d0] px-2 py-1 rounded">
                 ID: {item.entryId}
               </span>
             </button>

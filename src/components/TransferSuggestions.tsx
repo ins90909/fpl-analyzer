@@ -1,8 +1,6 @@
 'use client';
 
 import { FPLElement } from '@/types/fpl';
-import { ArrowRightLeft, TrendingUp, AlertCircle } from 'lucide-react';
-
 interface TransferSuggestionsProps {
   suggestions: any[];
 }
@@ -60,16 +58,15 @@ export function TransferSuggestions({ suggestions }: TransferSuggestionsProps) {
 
   if (parsedSuggestions.length === 0) {
     return (
-      <div className="bg-slate-800/60 border border-slate-700/60 rounded-xl p-6 backdrop-blur-sm mb-8 text-center text-slate-400 text-sm">
+      <div className="bg-white border border-[#c9e0eb] rounded-lg p-6 mb-8 text-center text-[#7891a3] text-sm">
         No immediate high-priority transfers recommended for this Gameweek.
       </div>
     );
   }
 
   return (
-    <div className="bg-slate-800/60 border border-slate-700/60 rounded-xl p-6 backdrop-blur-sm mb-8">
-      <h2 className="text-lg font-bold text-slate-200 flex items-center gap-2 mb-4">
-        <ArrowRightLeft className="w-5 h-5 text-emerald-400" />
+    <div className="bg-[#eaf6fb] border border-[#c9e0eb] rounded-lg p-6 mb-8">
+      <h2 className="text-lg font-bold text-[#244764] flex items-center gap-2 mb-4">
         <span>Recommended Transfer Upgrades</span>
       </h2>
 
@@ -77,48 +74,46 @@ export function TransferSuggestions({ suggestions }: TransferSuggestionsProps) {
         {parsedSuggestions.map((item, index) => (
           <div
             key={index}
-            className="p-4 bg-slate-900/80 border border-slate-700/80 rounded-xl flex items-center justify-between gap-3 text-xs"
+            className="p-4 bg-white border border-[#c9e0eb] rounded-lg flex items-center justify-between gap-3 text-xs"
           >
             {/* Sell Player */}
             <div className="flex-1 min-w-0">
-              <div className="text-[10px] font-bold text-rose-400 uppercase tracking-wider mb-1 flex items-center gap-1">
-                <AlertCircle className="w-3 h-3" />
+              <div className="text-[10px] font-bold text-[#b45851] uppercase tracking-wider mb-1">
                 <span>Sell</span>
               </div>
-              <div className="font-bold text-slate-200 truncate">
+              <div className="font-bold text-[#244764] truncate">
                 {item!.playerOut.web_name || 'Unknown'}
               </div>
-              <div className="text-slate-400 text-[11px]">
+              <div className="text-[#7891a3] text-[11px]">
                 {item!.playerOut.team_short || 'UNK'} • £{((item!.playerOut.now_cost || 0) / 10).toFixed(1)}m
               </div>
-              <div className="text-rose-400 font-semibold mt-1">
+              <div className="text-[#b45851] font-semibold mt-1">
                 {item!.outScore.toFixed(1)} xP
               </div>
             </div>
 
             {/* Transfer Arrow */}
             <div className="flex flex-col items-center justify-center px-2">
-              <div className="p-2 rounded-full bg-slate-800 text-emerald-400 border border-slate-700">
-                <ArrowRightLeft className="w-4 h-4" />
+              <div className="px-2 py-1 rounded bg-[#e8f7f0] text-[#327a68] border border-[#bde3d0] font-bold">
+                →
               </div>
-              <span className="text-[10px] font-bold text-emerald-400 mt-1">
+              <span className="text-[10px] font-bold text-[#327a68] mt-1">
                 +{item!.gain.toFixed(1)} xP
               </span>
             </div>
 
             {/* Buy Player */}
             <div className="flex-1 min-w-0 text-right">
-              <div className="text-[10px] font-bold text-emerald-400 uppercase tracking-wider mb-1 flex items-center justify-end gap-1">
-                <TrendingUp className="w-3 h-3" />
+              <div className="text-[10px] font-bold text-[#327a68] uppercase tracking-wider mb-1 flex items-center justify-end gap-1">
                 <span>Buy</span>
               </div>
-              <div className="font-bold text-slate-200 truncate">
+              <div className="font-bold text-[#244764] truncate">
                 {item!.playerIn.web_name || 'Unknown'}
               </div>
-              <div className="text-slate-400 text-[11px]">
+              <div className="text-[#7891a3] text-[11px]">
                 {item!.playerIn.team_short || 'UNK'} • £{((item!.playerIn.now_cost || 0) / 10).toFixed(1)}m
               </div>
-              <div className="text-emerald-400 font-semibold mt-1">
+              <div className="text-[#327a68] font-semibold mt-1">
                 {item!.inScore.toFixed(1)} xP
               </div>
             </div>

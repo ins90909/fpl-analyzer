@@ -5,7 +5,12 @@
 @tailwind utilities;
 
 html, body {
-  background-color: #020617;
-  color: #f8fafc;
+  background-color: #f4fbff;
+  color: #16324f;
   min-height: 100vh;
+}
+
+button,
+input {
+  font: inherit;
 }

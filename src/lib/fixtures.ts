@@ -50,14 +50,14 @@ export function getFDRBadgeColor(difficulty: number): string {
   switch (difficulty) {
     case 1:
     case 2:
-      return 'bg-emerald-600 text-slate-100 border-emerald-500/60';
+      return 'bg-[#d7f0e4] text-[#327a68] border-[#a9d7bf]';
     case 3:
-      return 'bg-slate-700 text-slate-200 border-slate-600/60';
+      return 'bg-[#edf4f7] text-[#648198] border-[#c9e0eb]';
     case 4:
-      return 'bg-rose-700 text-slate-100 border-rose-600/60';
+      return 'bg-[#fff0ef] text-[#b45851] border-[#efc8c4]';
     case 5:
-      return 'bg-rose-950 text-rose-300 border-rose-800';
+      return 'bg-[#fbe3e1] text-[#9f4b45] border-[#e8b4af]';
     default:
-      return 'bg-slate-800 text-slate-300 border-slate-700';
+      return 'bg-[#edf4f7] text-[#648198] border-[#c9e0eb]';
   }
 }

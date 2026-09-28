@@ -57,12 +57,13 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen bg-slate-950 text-slate-100 p-4 sm:p-8 space-y-8 max-w-7xl mx-auto">
+    <main className="min-h-screen bg-[#f4fbff] text-[#16324f] px-4 py-8 sm:px-8 space-y-8 max-w-7xl mx-auto">
       <div className="text-center space-y-2">
-        <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
+        <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#4d8ca8]">Fantasy Premier League</p>
+        <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-[#16324f]">
           FPL Squad Analyzer
         </h1>
-        <p className="text-sm text-slate-400">
+        <p className="text-sm text-[#648198]">
           Instant squad analysis, captain suggestions, and transfer optimization powered by real-time FPL data.
         </p>
       </div>
@@ -70,7 +71,7 @@ export default function Home() {
       <SearchBar onSearch={handleSearch} loading={loading} />
 
       {error && (
-        <div className="p-4 bg-rose-950/80 border border-rose-800 text-rose-300 rounded-xl text-center text-sm font-semibold max-w-xl mx-auto">
+        <div className="p-4 bg-[#fff0ef] border border-[#efc8c4] text-[#b45851] rounded-lg text-center text-sm font-semibold max-w-xl mx-auto">
           {error}
         </div>
       )}
