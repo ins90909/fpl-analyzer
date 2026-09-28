@@ -12,7 +12,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" data-theme="light" suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){var theme=localStorage.getItem('theme');if(theme==='dark')document.documentElement.dataset.theme='dark'})()`,
+          }}
+        />
+      </head>
       <body className="bg-[#f4fbff] text-[#16324f] min-h-screen">
         {children}
       </body>

@@ -8,6 +8,7 @@ import { TransferSuggestions } from '@/components/TransferSuggestions';
 import { PriceChangeTracker } from '@/components/PriceChangeTracker';
 import { WildcardOptimizer } from '@/components/WildcardOptimizer';
 import { SquadAvailabilityAlerts } from '@/components/SquadAvailabilityAlerts';
+import { ThemeToggle } from '@/components/ThemeToggle';
 import { analyzeSquad } from '@/lib/analyzer';
 import { FPLBootstrap, FPLPicksResponse, FPLFixture, AnalysisResult } from '@/types/fpl';
 
@@ -58,14 +59,19 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-[#f4fbff] text-[#16324f] px-4 py-8 sm:px-8 space-y-8 max-w-7xl mx-auto">
-      <div className="text-center space-y-2">
-        <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#4d8ca8]">Fantasy Premier League</p>
-        <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-[#16324f]">
-          FPL Squad Analyzer
-        </h1>
-        <p className="text-sm text-[#648198]">
-          Instant squad analysis, captain suggestions, and transfer optimization powered by real-time FPL data.
-        </p>
+      <div className="space-y-4">
+        <div className="flex justify-end">
+          <ThemeToggle />
+        </div>
+        <div className="text-center space-y-2">
+          <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#4d8ca8]">Fantasy Premier League</p>
+          <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-[#16324f]">
+            FPL Squad Analyzer
+          </h1>
+          <p className="text-sm text-[#648198]">
+            Instant squad analysis, captain suggestions, and transfer optimization powered by real-time FPL data.
+          </p>
+        </div>
       </div>
 
       <SearchBar onSearch={handleSearch} loading={loading} />
